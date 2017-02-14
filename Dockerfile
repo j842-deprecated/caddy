@@ -1,7 +1,7 @@
 FROM alpine:edge
 MAINTAINER j842
 
-RUN apk --no-cache add tini git openssh-client \
+RUN apk --no-cache add tini git openssh-client bash \
     && apk --no-cache add --virtual devs tar curl
 
 #Install Caddy Server, and All Middleware
@@ -12,8 +12,8 @@ RUN curl "https://caddyserver.com/download/build?os=linux&arch=amd64&features=DN
 RUN apk del devs
 
 #Copy over a default Caddyfile
-COPY ./Caddyfile /etc/Caddyfile
-COPY ./caddyrun /bin/caddyrun.sh
+#COPY ./Caddyfile /etc/Caddyfile
+COPY ./caddyrun.sh /bin/caddyrun.sh
 RUN chmod a+x /bin/caddyrun.sh
 
 #USER caddy

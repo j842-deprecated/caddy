@@ -1,0 +1,19 @@
+{
+    "value0": {
+        "cereal_class_version": 1,
+        "value0": [
+            {
+                "key": "DSERVICE",
+                "value": "false"
+            },
+            {
+                "key": "DSERVICENAME",
+                "value": ""
+            },
+            {
+                "key": "TAG",
+                "value": "j842/caddy"
+            }
+        ]
+    }
+}
