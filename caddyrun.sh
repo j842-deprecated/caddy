@@ -26,10 +26,11 @@ production = letsencrypt production
 EOF
 }
 
-[[ -v CERT_HOST ]] || { showhelp ; die "Missing CERT_HOST." ; }
-[[ -v SERVICE_HOST ]] || { showhelp ; die "Missing SERVICE_HOST." ; }
-[[ -v SERVICE_PORT ]] || { showhelp ; die "Missing SERVICE_PORT." ; }
-[[ -v MODE ]] || { MODE="fake" ; }
+[[ -n "$CERT_HOST" ]] || { showhelp ; die "Missing CERT_HOST." ; }
+[[ -n "$SERVICE_HOST" ]] || { showhelp ; die "Missing SERVICE_HOST." ; }
+[[ -n "$SERVICE_PORT" ]] || { showhelp ; die "Missing SERVICE_PORT." ; }
+[[ -n "$MODE" ]] || { MODE="fake" ; }
+[[ -n "$EMAIL" ]] || { showhelp ; die "Missing EMAIL." ; }
 
 # write out Caddy file.
 
@@ -60,7 +61,6 @@ EOF
 
 # -----------------------------------------------
    "staging")
-      [[ -v EMAIL ]] || { showhelp ; die "Missing EMAIL." ; }
 
 cat <<EOF >/etc/Caddyfile
 
@@ -72,7 +72,6 @@ EOF
 
 # -----------------------------------------------
    "production")
-      [[ -v EMAIL ]] || { showhelp ; die "Missing EMAIL." ; }
 
 cat <<EOF >/etc/Caddyfile
 
