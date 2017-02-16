@@ -35,7 +35,9 @@ EOF
 
 case "${MODE}" in
 
-# -----------------------------------------------
+# --------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
    "fake")
 cat <<EOF >/etc/Caddyfile
 
@@ -58,30 +60,63 @@ EOF
    caddy -quic --conf /etc/Caddyfile
    ;;
 
-# -----------------------------------------------
+# --------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
    "staging")
 [[ -n "$EMAIL" ]] || { showhelp ; die "Missing EMAIL." ; }
 
 cat <<EOF >/etc/Caddyfile
 
+${CERT_HOST}:443 {
+   proxy / http://${SERVICE_HOST}:${SERVICE_PORT} {
+		transparent
+		header_upstream Host {host}
+		header_upstream X-Real-IP {remote}
+		header_upstream X-Forwarded-For {host}
+		header_upstream X-Forwarded-Proto {scheme}
+   }
+   gzip
+   tls ${EMAIL}
+}
+
 EOF
+
+   cat /etc/Caddyfile
 
    caddy -quic --conf /etc/Caddyfile -ca "https://acme-staging.api.letsencrypt.org/directory"
    ;;
 
 
-# -----------------------------------------------
+# --------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
    "production")
 [[ -n "$EMAIL" ]] || { showhelp ; die "Missing EMAIL." ; }
 
 cat <<EOF >/etc/Caddyfile
 
+${CERT_HOST}:443 {
+   proxy / http://${SERVICE_HOST}:${SERVICE_PORT} {
+		transparent
+		header_upstream Host {host}
+		header_upstream X-Real-IP {remote}
+		header_upstream X-Forwarded-For {host}
+		header_upstream X-Forwarded-Proto {scheme}
+   }
+   gzip
+   tls ${EMAIL}
+}
+
 EOF
+
+   cat /etc/Caddyfile
 
    caddy -quic --conf /etc/Caddyfile
    ;;
    
 # -----------------------------------------------
+# --------------------------------------------------------------------------------------------
 
          *)
             showhelp
